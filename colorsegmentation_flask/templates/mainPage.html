@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Color segmentation with OpenCV</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+        });
+    </script>
+    <link crossorigin="anonymous"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/mainPage.css') }}" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container shadow min-vh-100 py-5">
+    <div class="p-3 mb-2 bg-info text-white">
+        <div class="form mb-3">
+            <div class="card">
+                <div class="card-header text-center" style="color: black !important">
+                    <h3>Color segmentation with OpenCV</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-sm-8">
+                <form enctype="multipart/form-data" method="POST">
+                    <div class="col-sm-10 mb-3">
+                        <div class="custom-file">
+                            <input class="custom-file-input" id="customImage" name="Image" required type="file">
+                            <label class="custom-file-label" for="customImage">Choose image for color
+                                segmentation</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-10 mb-3">
+                        <label for="listLowerBound">Please, enter expected HSV color lower bound separated by a
+                            space</label>
+                        <input class="form-control" id="listLowerBound" name="lowerBound"
+                               placeholder="HSV color lower bound" required type="text">
+                    </div>
+                    <div class="col-sm-10 mb-3">
+                        <label for="listUpperBound">Please, enter expected HSV color upper bound separated by a
+                            space</label>
+                        <input class="form-control" id="listUpperBound" name="upperBound"
+                               placeholder="HSV color upper bound" required type="text">
+                    </div>
+                    <div class="col-sm-10 mb-3">
+                        <label for="customArea">Please, enter the expected area fraction of the object of interest in
+                            relation to the area of the picture </label>
+                        <input class="form-control" id="customArea" name="Area"
+                               placeholder="Area fraction, for example 0.01 or 0.28, etc" required type="text">
+                    </div>
+
+                    <fieldset class="form-group col-sm-10">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-4 pt-0">Show convex border?</legend>
+                            <div class="col-sm-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="gridConvex1" name="gridConvex"
+                                           required type="radio" value="true">
+                                    <label class="form-check-label" for="gridConvex1">
+                                        Yes
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" id="gridConvex2" name="gridConvex"
+                                           required type="radio" value="false">
+                                    <label class="form-check-label" for="gridConvex2">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-group col-sm-10">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-4 pt-0">Show segmentation mask?</legend>
+                            <div class="col-sm-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="gridSegmentation1" name="gridSegmentation"
+                                           required type="radio" value="true">
+                                    <label class="form-check-label" for="gridSegmentation1">
+                                        Yes
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" id="gridSegmentation2" name="gridSegmentation"
+                                           required type="radio" value="false">
+                                    <label class="form-check-label" for="gridSegmentation2">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-group col-sm-10">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-4 pt-0">Delete inner holes?</legend>
+                            <div class="col-sm-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="gridHoles1" name="gridHoles" required
+                                           type="radio" value="true">
+                                    <label class="form-check-label" for="gridHoles1">
+                                        Yes
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" id="gridHoles2" name="gridHoles" required
+                                           type="radio" value="false">
+                                    <label class="form-check-label" for="gridHoles2">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>
+
+
+            </div>
+
+            <div class="col-sm-4">
+                <div class="card">
+                    <img alt="Dataframe example" class="card-img-top" src="https://i.imgur.com/y5rxXkf.jpg">
+                    <div class="card-header text-center" style="color: black !important">
+                        <h4>Instructions</h4>
+                    </div>
+                    <div class="card-body" style="color: black !important">
+                        <ul>
+                            <li>
+                                Upload image
+                            </li>
+                            <li>
+                                Choose hsv boundaries: [0, 0, 0] <= lower <= upper < [180, 256, 256]
+                            </li>
+                            <li>
+                                Choose expected area fraction of the objects: 0 < area <= 1
+                            </li>
+                            <li>
+                                Contours of interest are blue
+                            </li>
+                            <li>
+                                You can draw convex boundaries for your object (green line)
+                            </li>
+                            <li>
+                                You can draw mask (yellow transparent mask)
+                            </li>
+                            <li>
+                                You can delete inner holes in mask (beta-version)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

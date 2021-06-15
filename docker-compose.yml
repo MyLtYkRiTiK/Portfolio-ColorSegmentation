@@ -1,0 +1,10 @@
+faces:
+  image: colorsegmentationflaskimg
+  container_name: colorsegmentationflask
+  restart: always
+  ports:
+    - 60012:5000
+  volumes:
+    - ./colorsegmentation_flask:/app
+  environment:
+    - FLASK_ENV=production

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Color segmentation with OpenCV</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+        });
+    </script>
+    <link crossorigin="anonymous"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/resultPage.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container shadow min-vh-100 py-5">
+    <div class="p-3 mb-2 bg-light text-black">
+        <div class="form mb-3">
+            <div class="card">
+                <div class="card-header text-center" style="color: black !important">
+                    <h3>Color segmentation with OpenCV</h3>
+                </div>
+            </div>
+        </div>
+
+        <p class="fs-1">Your chosen segmentation colors:</p>
+
+        <div class="row bottom-buffer">
+            <div class="col-md-3">
+                <img alt="color_0" src="data:image/jpeg;charset=utf-8;base64, {{color_images.0.decode('ascii')}}"/>
+            </div>
+            <div class="col-md-3">
+                <img alt="color_1" src="data:image/jpeg;charset=utf-8;base64, {{color_images.1.decode('ascii')}}"/>
+            </div>
+            <div class="col-md-3">
+                <img alt="color_2" src="data:image/jpeg;charset=utf-8;base64, {{color_images.2.decode('ascii')}}"/>
+            </div>
+            <div class="col-md-3">
+                <img alt="color_3" src="data:image/jpeg;charset=utf-8;base64, {{color_images.3.decode('ascii')}}"/>
+            </div>
+        </div>
+
+        <p>Your output image:</p>
+
+        <div class="text-center">
+            <img alt="Responsive image"
+                 class="img-fluid" src="data:image/jpeg;charset=utf-8;base64, {{color_segmentation_image.decode('ascii')}}">
+        </div>
+
+    </div>
+</div>
+</div>
+</body>
+</html>
