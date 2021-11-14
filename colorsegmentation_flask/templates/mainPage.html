@@ -42,16 +42,10 @@
                     </div>
 
                     <div class="col-sm-10 mb-3">
-                        <label for="listLowerBound">Please, enter expected HSV color lower bound separated by a
+                        <label for="listRgbColor">Please, enter expected rgb color separated by a
                             space</label>
-                        <input class="form-control" id="listLowerBound" name="lowerBound"
-                               placeholder="HSV color lower bound" required type="text">
-                    </div>
-                    <div class="col-sm-10 mb-3">
-                        <label for="listUpperBound">Please, enter expected HSV color upper bound separated by a
-                            space</label>
-                        <input class="form-control" id="listUpperBound" name="upperBound"
-                               placeholder="HSV color upper bound" required type="text">
+                        <input class="form-control" id="listRgbColor" name="rgbColor"
+                               placeholder="RGB color" required type="text">
                     </div>
                     <div class="col-sm-10 mb-3">
                         <label for="customArea">Please, enter the expected area fraction of the object of interest in
@@ -144,7 +138,7 @@
                                 Upload image
                             </li>
                             <li>
-                                Choose hsv boundaries: [0, 0, 0] <= lower <= upper < [180, 256, 256]
+                                Choose main rgb color: [0, 0, 0] <= color < [256, 256, 256]
                             </li>
                             <li>
                                 Choose expected area fraction of the objects: 0 < area <= 1

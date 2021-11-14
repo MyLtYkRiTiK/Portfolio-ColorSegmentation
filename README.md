@@ -4,9 +4,11 @@ Demo: http://valentinabiryukova.ipq.co:60012/
 
 This is easy and fast tool for image segmentation by color.
 
+![](https://i.imgur.com/y5rxXkf.jpg)
+
 ### Benefits:
 
-- Fast 
+- Fast
 - Finds inner holes and delete them (beta-version)
 - Without complex neural networks
 - Without training
@@ -21,6 +23,6 @@ This is easy and fast tool for image segmentation by color.
 ### TO DO
 
 - [ ] Improve holes removing
-- [ ] Add color wheel and remove manual input of hsv bounds
+- [ ] Add color wheel and remove manual input of color
 - [ ] Add possibilities to choose several boundaries
 

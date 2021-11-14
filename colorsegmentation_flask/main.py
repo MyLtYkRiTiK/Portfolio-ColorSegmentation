@@ -20,8 +20,7 @@ def main():
 
     if request.method == 'POST':
         request_image = request.files['Image']
-        request_lower_bound = request.form['lowerBound']
-        request_upper_bound = request.form["upperBound"]
+        request_rgb_color = request.form['rgbColor']
         request_area = request.form["Area"]
         request_convex = request.form["gridConvex"]
         request_segmentation_mask = request.form["gridSegmentation"]
@@ -30,8 +29,7 @@ def main():
         array_image = numpy.fromstring(image_string, numpy.uint8)
 
         color_segmentation = ColorSegmentation(array_image=array_image,
-                                               lower_bound=request_lower_bound,
-                                               upper_bound=request_upper_bound,
+                                               rgb_color=request_rgb_color,
                                                interest_area=request_area,
                                                draw_convex=request_convex,
                                                draw_mask=request_segmentation_mask,
