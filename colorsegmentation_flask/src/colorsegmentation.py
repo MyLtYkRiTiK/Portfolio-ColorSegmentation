@@ -1,3 +1,5 @@
+import colorsys
+
 import cv2
 import numpy as np
 
@@ -6,8 +8,9 @@ class ColorSegmentation:
     """
     Color Segmentation class that validates inputs, find and filter contours and draw them
     """
+
     def __init__(self, array_image: np.array,
-                 lower_bound: str, upper_bound: str,
+                 rgb_color: str,
                  interest_area: str,
                  draw_convex: str,
                  draw_mask: str,
@@ -15,8 +18,9 @@ class ColorSegmentation:
                  ):
         self.image = cv2.imdecode(array_image, cv2.IMREAD_ANYCOLOR)
         self.hsv_image = None
-        self.lower_bound = np.array([int(x) for x in lower_bound.split( )])
-        self.upper_bound = np.array([int(x) for x in upper_bound.split( )])
+        self.rgb_color = [int(x) / 255 for x in rgb_color.split( )]
+        self.lower_bound = self.make_lower_bound( )
+        self.upper_bound = self.make_upper_bound( )
         self.area = float(interest_area)
         self.draw_convex = self.str2bool(draw_convex)
         self.draw_mask = self.str2bool(draw_mask)
@@ -31,6 +35,17 @@ class ColorSegmentation:
     @staticmethod
     def str2bool(string):
         return string in ['true', ]
+
+    def make_lower_bound(self):
+        bound = colorsys.rgb_to_hsv(*self.rgb_color)
+        bound = (bound[0] * 179 - 30, bound[1] * 255 - 130, bound[1] * 255 - 130)
+        bound = [max(0, x) for x in bound]
+        return np.array([int(x) for x in bound])
+
+    def make_upper_bound(self):
+        bound = colorsys.rgb_to_hsv(*self.rgb_color)
+        bound = [min(179, bound[0] * 180 + 30), min(255, bound[1] * 255 + 130), min(255, bound[1] * 255 + 130)]
+        return np.array([int(x) for x in bound])
 
     def validate_image(self):
         """
@@ -140,7 +155,7 @@ class ColorSegmentation:
         if len(self.largest_contour_indexes) > 0:
             self.hierarchy = self.hierarchy.squeeze( )
         else:
-            return None, "There is now color of interest of expected size"
+            return None, "There is no color of interest of expected size"
         alpha = 0.3
         BLUE = (255, 190, 0)
         GREEN = (0, 255, 0)
